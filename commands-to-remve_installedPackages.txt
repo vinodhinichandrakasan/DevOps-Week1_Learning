@@ -1,0 +1,16 @@
+************code to uninstall java*****
+sudo apt remove --autoremove openjdk-8-*
+sudo apt remove --autoremove openjdk-11-*
+******** code to remove the default content****
+ sudo apt remove default-jdk default-jre
+******************To show the list of the java package available***********************
+ dpkg --list | grep jdk
+*************************To remove chrome **************************
+	sudo apt remove google-chrome-stable
+*****************To remove installed git*********************
+sudo apt remove git
+************To remove installed maven:*******************
+sudo apt remove maven
+
+*************Code to remove the Xvfb*************************
+sudo apt-get purge xvfb

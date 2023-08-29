@@ -1,0 +1,58 @@
+    install_package "openjdk-8-jdk";
+fi
+
+# Check Maven exist or not?
+if is_Command_Exist "mvn"; then
+    echo "Maven is installed in this ubuntu"
+else
+    echo "mvn is not installed"
+    sudo apt-get update
+    sudo apt-get install maven -y
+fi
+
+#Check git exist or not?
+if is_Command_Exist "git"; then
+        echo "Git is already install"
+else
+        echo "Git need to be installed"
+        install_package "git"
+fi
+
+
+echo "current directory is" $(pwd)
+
+#check chrome browser is installed or not
+if command -v google-chrome >/dev/null 2>&1; then
+        echo "chrome is already installed"
+else
+        echo "chrome is not installed"
+        Install_Chrome "http://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.198-1_amd64.deb"
+        depacking_package " -i google-chrome-stable_114.0.5735.198-1_amd64.deb"
+fi
+#Check xvfb is installed or not
+if is_Command_Exist "Xvfb"; then
+        echo "XVFB is installed in this ubuntu"
+else
+        echo "xvfb is not installed in ubuntu"
+        install_package "xvfb"
+fi
+
+#check git repo is cloned or not if not clone it
+if [ -f .git ]; then
+    echo "git repo is cloned already"
+else
+    echo "git repo is not cloned"
+    git clone https://github.com/TestLeafInc/webdriver-tests
+fi
+#maven cmd to run the automated script
+echo "Going to run the automated script"
+        cd ~/webdriver-tests
+        mvn clean test
+#command to aws configure sync
+echo "Have run the script and now going to sync the report"
+        cd ~/webdriver-tests/
+        ls -la
+        sleep 3
+        echo "present directory is" $(pwd)
+        aws s3 sync reports/ s3://reports-for-selenium
+                                                                                                                                                    
