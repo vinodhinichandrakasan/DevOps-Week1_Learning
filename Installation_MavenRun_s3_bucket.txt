@@ -1,3 +1,40 @@
+#!/bin/bash
+
+# Condition to allow or not allow to run
+bPassed=true
+# Function to check if given command exist !!
+is_Command_Exist(){
+    local arg="$1"
+        sleep 2
+    type "$arg" &> /dev/null
+    return $?
+}
+
+# Install Function
+install_package(){
+    local arg="$1"
+    sudo apt install "$arg"
+}
+#depacking the installed
+depacking_package() {
+        local arg="$1"
+        sudo dpkg "$arg"
+}
+#function to install chrome
+install_chrome() {
+    echo "Installing Google Chrome..."
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    sudo apt install -f
+    rm google-chrome-stable_current_amd64.deb
+    echo "Google Chrome installed successfully."
+}
+
+# Check Java exist or not?
+if is_Command_Exist "java"; then
+    echo "Java is installed in this ubuntu"
+else
+    echo "Java is not installed"
     install_package "openjdk-8-jdk";
 fi
 
@@ -26,8 +63,7 @@ if command -v google-chrome >/dev/null 2>&1; then
         echo "chrome is already installed"
 else
         echo "chrome is not installed"
-        Install_Chrome "http://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.198-1_amd64.deb"
-        depacking_package " -i google-chrome-stable_114.0.5735.198-1_amd64.deb"
+        install_Chrome
 fi
 #Check xvfb is installed or not
 if is_Command_Exist "Xvfb"; then
@@ -55,4 +91,4 @@ echo "Have run the script and now going to sync the report"
         sleep 3
         echo "present directory is" $(pwd)
         aws s3 sync reports/ s3://reports-for-selenium
-                                                                                                                                                    
+                                                                                                                                                                                       
